@@ -1,0 +1,15 @@
+clear,d = 1e-1;
+x = 0:d:1;
+xq = x+d/4;
+xh = x+d/2;
+xq3 = x+3*d/4;
+fx = 1./(1+x.^2);
+fxq = 1./(1+xq.^2);
+fxh = 1./(1+xh.^2);
+fxq3 = 1./(1+xq3.^2);
+fm = (7*fx(1:end-1)+32*fxq(1:end-1)+12*fxh(1:end-1)+32*fxq3(1:end-1)+7*fx(2:end))/90;%  3.1001e-11 
+% fm = (fx(1:end-1)+4*fxh(1:end-1)+fx(2:end))/6;%     6.2001e-10
+% fm = (fx(1:end-1)+fx(2:end))/2;%    0.0017
+f_int = sum(fm)*d
+pi_app = f_int*4
+err = abs(pi_app - pi)

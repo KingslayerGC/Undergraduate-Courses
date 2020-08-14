@@ -1,0 +1,37 @@
+create table student
+(student_id char(8) not null,
+student_name varchar(10) not null,
+department varchar(10),
+age integer,
+primary key (student_id));
+
+
+create table class
+(class_id char(10) not null,
+class_name varchar(10) not null,
+first_class_id char(10),
+primary key (class_id));
+
+create table student_grade
+(
+student_id char(8) references student (student_id),
+class_id char(10) references class (class_id),
+grade integer constraint grade_demand check(grade between 0 and 100)
+);
+
+
+select *
+from emp
+order by sal desc
+limit 3 offset 2;
+
+--这个命令只针对外键约束，在PostgreSQL中似乎并没有关闭所有约束的语法
+alter table student_grade disable trigger all;
+--对于check约束，暂时只找到删除再重建这种关闭办法
+alter table student_grade drop constraint grade_demand;
+alter table student_grade add constraint grade_demand check(grade between 0 and 100);
+
+--添加一列
+alter table student add column home_address varchar(20);
+--删除一列
+alter table student drop column home_address;

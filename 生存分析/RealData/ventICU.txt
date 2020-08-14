@@ -1,0 +1,53 @@
+D.1  Mechanical Ventilation in an Intensive Care Unit
+=====================================================
+
+Description of Variables:
+
+id          patient ID 
+age         patient's age (years)
+sex.female  sex: 0 if male; 1 if female
+enum        cumulative number of lines by patient
+from        the state from which transition may occur
+to          the state to which transition may occur
+            1 if ventilation OFF
+            2 if ventilation ON
+            3 if discharge from ICU
+            4 if death
+            999 if censored
+estart      the beginning of the at risk period
+estop       the end of the at risk period
+
+
+Reference:
+
+Grundmann H, Barwolff S, Tami A, Behnke M, Schwab F, Geffers C, Halle E, 
+Gobel U, Schiller R, Jonas D, Klare I, Weist K, Witte W, Beck-Beilecke K, 
+Schumacher M, Ruden H and Gastmeier P (2005). 
+How many infections are caused by patient-to-patient transmission in intensive care units?
+Critical Care Medicine, 33(5): 946-951.
+
+
+> ventICU <- read.table("ventICU.dat", header=T)
+
+> length(unique(ventICU$id))
+  [1] 747
+
+> dim(ventICU)
+  [1] 1141    8
+
+> ventICU[1:9,]
+    id      age sex.female enum from to estart estop
+1   41 75.34153          1    1    1  3      0     4
+2  395 19.17380          0    1    1  3      0    24
+3  710 61.56568          0    1    2  1      0    33
+4  710 61.56568          0    2    1  3     33    37
+5 3138 57.88038          1    1    1  3      0     8
+6 3154 39.00639          0    1    1  3      0     3
+7 3178 70.27762          0    1    1  2      0     1
+8 3178 70.27762          0    2    2  1      1     7
+9 3178 70.27762          0    3    1  3      7    24
+
+> table(ventICU$from, ventICU$to)   
+      1   2   3   4 999
+  1   0  75 585  21   5
+  2 319   0  72  55   9

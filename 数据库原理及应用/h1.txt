@@ -1,0 +1,20 @@
+set sqlp 'SQL=';
+set heading off;
+
+select *
+from emp
+where (sal between 2000 and 3000) and (comm is NULL or comm = 0);
+
+select ename as 员工名字
+from emp
+where deptno = (select deptno from emp where ename = 'JONES');
+
+select *
+from emp
+where ename like 'S____';
+
+select ename as 员工姓名, extract (year from hiredate)||'年'||extract (month from hiredate)||'月'||extract (day from hiredate)||'日' as 雇佣时间
+from emp;
+
+select ename as 员工姓名, '$'||round(sal + coalesce(comm, 0), 2) as 总收入
+from emp;

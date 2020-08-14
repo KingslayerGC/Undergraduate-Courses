@@ -1,0 +1,44 @@
+D.4  Shedding of Cytomegalovirus in HIV-Infected Individuals
+=============================================================
+
+Description of Variables:
+
+id          patient ID
+urineL      days of last negative shedding in urine since earliest urine shedding date 
+urineR      days of first positive shedding in urine
+bloodL      days of last negative shedding in blood since earliest blood shedding date
+bloodR      days of first positive shedding in blood
+urine.cens  shedding in urine status:
+            0 if right censored; 2 if left censored; 3 if interval censored
+blood.cens  shedding in blood status:
+            0 if right censored; 2 if left censored; 3 if interval censored
+
+
+References:
+
+Betensky R and Finkelstein D (1999). 
+A nonparametric maximum likelihood estimator for bivariate interval censored data. 
+Statistics in Medicine, 18(22): 3089-3100.
+
+Goggins W and Finkelstein D (2000). 
+A proportional hazards model for multivariate interval-censored failure time data. 
+Biometrics, 56(3): 940-943.
+
+
+> cmvdata <- read.table("cmvdata.dat", header=T)
+
+> dim(cmvdata)  
+  [1] 232   7
+
+> cmvdata[cmvdata$id %in% c(20116,20286,20309,70143,70897,140268,210066,210461),]
+
+      id urineL urineR bloodL bloodR urine.cens blood.cens
+   20116    346     NA    346     NA          0          0
+   20286    264    300    350     NA          3          0
+   20309    252    280    252    336          3          3
+   70143     NA      1    166     NA          2          0
+   70897     28     56     NA      1          3          2
+  140268     NA     NA     NA     NA         NA         NA
+  210066     NA      1    172    258          2          3
+  210461     NA      1     NA      1          2          2
+

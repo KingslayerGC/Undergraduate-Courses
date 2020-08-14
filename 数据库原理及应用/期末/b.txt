@@ -1,0 +1,140 @@
+create table 审核 (
+   审核员工号                INTEGER               not null,
+   审核人                  CHAR(256)             not null,
+   密码                   CHAR(256)             not null,
+   constraint PK_审核 primary key (审核员工号)
+);
+create table 审核表2 (
+   审核员工号                INTEGER               not null,
+   审核时间                 DATE                  not null,
+   审核结果                 CHAR(256)             not null,
+   投诉反馈                 CHAR(256)             not null,
+   constraint PK_审核表2 primary key (审核员工号)
+);
+create index 审核表2_FK on 审核表2 (
+   );
+create table 广告商 (
+   企业编号                 CHAR(256)             not null,
+   公司名                  CHAR(256)             not null,
+   constraint PK_广告商 primary key (企业编号)
+);
+create table 广告投放1 (
+   企业编号                 CHAR(256)             not null,
+   视频号                  CHAR(12)              not null,
+   constraint PK_广告投放1 primary key (企业编号, 视频号)
+);
+create index 广告投放1_FK on 广告投放1 (
+   企业编号 ASC
+);
+create index 广告投放4_FK on 广告投放1 (
+   视频号 ASC
+);
+create table 广告投放2 (
+   "UID"                NUMBER                not null,
+   企业编号                 CHAR(256)             not null,
+   constraint PK_广告投放2 primary key ("UID", 企业编号)
+);
+create index 广告投放2_FK on 广告投放2 (
+   "UID" ASC
+);
+create index 广告投放3_FK on 广告投放2 (
+   企业编号 ASC
+);
+create table 弹幕评论 (
+   发送时间                 DATE                  not null,
+   内容                   CHAR(140)             not null,
+   所属视频号                CHAR(12)              not null
+);
+create table 生成 (
+   "UID"                NUMBER                not null,
+   constraint PK_生成 primary key ("UID")
+);
+create index 生成2_FK on 生成 (
+   
+);
+create table 用户 (
+   "UID"                NUMBER                not null,
+   登录手机号                NUMBER(13),
+   密码                   CHAR(256),
+   用户昵称                 CHAR(12)              not null,
+   个性签名                 CHAR(70),
+   硬币                   NUMBER,
+   "b币"                 NUMBER,
+   等级                   NUMBER                not null,
+   上传视频数量              INTEGER             not null,
+   constraint PK_用户 primary key ("UID")
+);
+create table 用户观看 (
+   视频号                  CHAR(12)              not null,
+   "UID"                NUMBER                not null,
+   观看时长                 DATE                  not null,
+   constraint PK_用户观看 primary key (视频号, "UID")
+);
+create index 用户观看_FK on 用户观看 (
+   视频号 ASC
+);
+create index 用户观看2_FK on 用户观看 (
+   "UID" ASC
+);
+create table 视频 (
+   视频号                  CHAR(12)              not null,
+   分区                   CHAR(4)               not null,
+   视频简介                 CHAR(250),
+   视频标题                 CHAR(80)              not null,
+   类型                   CHAR(2)               not null,
+   播放量                  NUMBER,
+   点赞量                  NUMBER,
+   投币量                  NUMBER,
+   转发量                  NUMBER,
+   constraint PK_视频 primary key (视频号)
+);
+create table 视频内容审核表 (
+   视频号                  CHAR(12)              not null,
+   审核员工号                INTEGER               not null,
+   审核时间                 DATE                  not null,
+   审核结果                 CHAR(256)             not null,
+   constraint PK_视频内容审核表 primary key (视频号, 审核员工号)
+);
+create index 视频内容审核表_FK on 视频内容审核表 (
+   视频号 ASC
+);
+create index 视频内容审核表2_FK on 视频内容审核表 (
+   审核员工号 ASC
+);
+
+alter table 审核表2
+   add constraint FK_审核表2_审核表2_弹幕评论 foreign key ()
+      references 弹幕评论;
+alter table 审核表2
+   add constraint FK_审核表2_审核表3_审核 foreign key (审核员工号)
+      references 审核 (审核员工号);
+alter table 广告投放1
+   add constraint FK_广告投放1_广告投放1_广告商 foreign key (企业编号)
+      references 广告商 (企业编号);
+alter table 广告投放1
+   add constraint FK_广告投放1_广告投放4_视频 foreign key (视频号)
+      references 视频 (视频号);
+alter table 广告投放2
+   add constraint FK_广告投放2_广告投放2_用户 foreign key ("UID")
+      references 用户 ("UID");
+alter table 广告投放2
+   add constraint FK_广告投放2_广告投放3_广告商 foreign key (企业编号)
+      references 广告商 (企业编号);
+alter table 生成
+   add constraint FK_生成_生成_用户 foreign key ("UID")
+      references 用户 ("UID");
+alter table 生成
+   add constraint FK_生成_生成2_弹幕评论 foreign key ()
+      references 弹幕评论;
+alter table 用户观看
+   add constraint FK_用户观看_用户观看_视频 foreign key (视频号)
+      references 视频 (视频号);
+alter table 用户观看
+   add constraint FK_用户观看_用户观看2_用户 foreign key ("UID")
+      references 用户 ("UID");
+alter table 视频内容审核表
+   add constraint FK_视频内容审核表_视频内容审核表_视频 foreign key (视频号)
+      references 视频 (视频号);
+alter table 视频内容审核表
+   add constraint FK_视频内容审核表_视频内容审核表2_审核 foreign key (审核员工号)
+      references 审核 (审核员工号);

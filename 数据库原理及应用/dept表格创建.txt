@@ -1,0 +1,11 @@
+#创建 scott 数据库中的 dept 表
+create table dept(
+deptno integer primary key,
+dname varchar(15),
+loc varchar(50)????
+);
+
+INSERT INTO dept VALUES (10,'ACCOUNTING','NEW YORK');?
+INSERT INTO dept VALUES (20,'RESEARCH','DALLAS');?
+INSERT INTO dept VALUES (30,'SALES','CHICAGO');?
+INSERT INTO dept VALUES (40,'OPERATIONS','BOSTON');

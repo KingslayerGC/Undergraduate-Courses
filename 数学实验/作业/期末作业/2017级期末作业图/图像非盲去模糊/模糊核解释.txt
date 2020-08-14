@@ -1,0 +1,2 @@
+模糊核可以通过load BlurKernel获取，也可以通过
+kernel = fspecial('disk',5); 获取

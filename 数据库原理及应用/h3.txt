@@ -1,0 +1,114 @@
+1、
+select * from emp
+where sal > (select max(sal)/2 from emp);
+
+select b.dname from emp a, dept b
+where a.deptno = b.deptno
+group by b.dname
+having avg(a.sal) > (select avg(sal) from emp);
+
+select job from emp
+group by job
+order by count(*) desc
+limit 2;
+
+select b.dname from emp a, dept b
+where a.deptno = b.deptno
+group by b.dname
+order by count(*) desc
+limit 1;
+
+select b.dname from emp a, dept b
+where a.deptno = b.deptno
+group by b.dname
+order by max(a.sal)-min(a.sal) desc
+limit 1;
+
+
+2、
+
+#建表
+
+create table S
+(S# varchar2(2) primary key,
+SN varchar2(1) not null,
+SD varchar2(2),
+SA integer)
+
+create table C
+(C# varchar2(2) primary key,
+CN varchar2(1) not null,
+PC# varchar2(2))
+
+create table SC
+(S# varchar2(2),
+C# varchar2(2),
+G integer,
+constraint check (G between 0 and 100),
+constraint unionkeyname primary key (S#, C#),
+constraint foreign key(S#) references S(S#),
+constraint foreign key(C#) references C(C#))
+
+#数据文件
+
+inputS.txt
+S1 A CS 20
+S2 B CS 21
+S3 C MA 19
+S4 D PH 19
+S5 E MA 20
+S6 F CS 22
+
+inputC.txt
+C1 G NULL
+C2 H C1
+C3 I C1
+C4 J C2
+C5 K C4
+
+inputSC.txt
+S1 C1 100
+S1 C2 100
+S1 C3 100
+S1 C5 80
+S2 C1 80
+S2 C2 60
+S2 C4 60
+S3 C2 80
+S3 C3 60
+S3 C4 80
+S4 C3 80
+S4 C5 40
+S5 C2 60
+S5 C3 80
+S5 C5 80
+S6 C4 100
+S6 C5 100
+
+#控制文件
+controlS.ctl
+load data
+infile 'inputS.txt'
+INTO table S
+fields terminated by " "
+(S#,SN,SD,SA)
+
+controlC.ctl
+load data
+infile 'inputC.txt'
+INTO table C
+fields terminated by " "
+(C#,CN,PC#)
+
+controlSC.ctl
+load data
+infile 'inputSC.txt'
+INTO table SC
+fields terminated by " "
+(S#,C#,G)
+
+#cmd命令
+cd C:\
+sqlldr user_id=scott/tiger control=controlS.ctl
+sqlldr user_id=scott/tiger control=controlC.ctl
+sqlldr user_id=scott/tiger control=controlSC.ctl
